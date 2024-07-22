@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="3.0" xmlns="https://jakarta.ee/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd">
+  <persistence-unit name="LaboratorioDS" transaction-type="JTA">
+    <description>Proyecto de prueba para la WebEnCasa</description>
+    <!-- Persistence provider implementation -->
+    <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+    <jta-data-source>java:/LaboratorioDS</jta-data-source>
+    <!-- Exclude unlisted classes -->
+    <class>com.laboratorio.testjpaweb.modelo.Persona</class>
+    <exclude-unlisted-classes>true</exclude-unlisted-classes>
+    <!-- Database connection properties -->
+    <properties>
+      <property name="hibernate.show_sql" value="true"/>
+      <property name="hibernate.format_sql" value="true"/>
+      <property name="hibernate.hbm2ddl.auto" value="validate"/>
+    </properties>
+  </persistence-unit>
+</persistence>

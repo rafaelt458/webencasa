@@ -1,0 +1,31 @@
+# Comandos para convertir el certificado en un keystore Java:
+openssl pkcs12 -export -in /etc/letsencrypt/live/[NOMBRE-DOMINIO]/fullchain.pem -inkey /etc/letsencrypt/live/[NOMBRE-DOMINIO]/privkey.pem -out [NOMBRE_KEYSTORE].p12 -name [ALIAS_KEYSTORE]
+
+# cuando pida el password indicar: [PASSWORD]
+
+/usr/lib/jvm/java-21-openjdk-amd64/bin/keytool -importkeystore -deststorepass [PASSWORD] -destkeypass [PASSWORD] -destkeystore [NOMBRE_KEYSTORE].jks -srckeystore [NOMBRE_KEYSTORE].p12 -srcstoretype PKCS12 -srcstorepass [PASSWORD] -alias [ALIAS_KEYSTORE]
+
+
+# Bath a ejecutar el en WildFly
+
+batch
+# Configure Server Keystore 
+/subsystem=elytron/key-store=[NOMBRE_KEYSTORE_WILDFLY]:add(path=[NOMBRE_KEYSTORE].jks,relative to=jboss.server.config.dir, credential-reference={clear-text=[PASSWORD]},type=JKS)
+# Server Keystore credentials   
+/subsystem=elytron/key-manager=[NOMBRE_KEY_MANAGER]:add(key-store=[NOMBRE_KEYSTORE_WILDFLY],credential-reference={clear-text=[PASSWORD]})
+# Server keystore Protocols   
+/subsystem=elytron/server-ssl-context=[NOMBRE_SSL_CONTEXT]:add(key-manager=[NOMBRE_KEY_MANAGER],protocols=["TLSv1.2"])
+# Store SSL Context information in undertow 
+/subsystem=undertow/server=default-server/https-listener=https:write-attribute(name=ssl-context,value=[NOMBRE_SSL_CONTEXT])
+run-batch
+
+# Configuración apache
+Redirect permanent "/" "https://[NOMBRE-DOMINIO]:8443/WebEnCasa/"
+
+# Configuración WildFly
+<filters>
+            <rewrite name="myfilter" redirect="true" target="/WebEnCasa/"/>
+        </filters>
+
+
+<filter-ref name="myfilter" predicate="path('/')"/>

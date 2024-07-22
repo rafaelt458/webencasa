@@ -1,0 +1,7 @@
+com\laboratorio\testjpaweb\JAXRSConfiguration.class
+com\laboratorio\testjpaweb\persistencia\PersonaDB.class
+com\laboratorio\testjpaweb\persistencia\ConnectionPoolManager.class
+com\laboratorio\testjpaweb\resources\JavaEE8Resource.class
+com\laboratorio\testjpaweb\modelo\Persona.class
+com\laboratorio\testjpaweb\controlador\PersonasController.class
+com\laboratorio\testjpaweb\modelo\PersonaRequest.class
